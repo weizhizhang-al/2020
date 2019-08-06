@@ -1,28 +1,316 @@
+
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
 <head>
 
 
     <!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-
 
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
     <!-- your CSS file link goes HERE -->
     <link rel="stylesheet" type="text/css" href="./css/custom.css">
-    <script src="jquery-3.4.1.min.js"></script>
+<!--    <script src="jquery-3.4.1.min.js"></script>-->
+    <script>
+       var ip="";
+		
+var country="";
+// Create the XHR object.
+function createCORSRequest(method, url) {
+  var xhr = new XMLHttpRequest();
+  if ("withCredentials" in xhr) {
+    // XHR for Chrome/Firefox/Opera/Safari.
+    xhr.open(method, url, true);
+  } else if (typeof XDomainRequest != "undefined") {
+    // XDomainRequest for IE.
+    xhr = new XDomainRequest();
+    xhr.open(method, url);
+  } else {
+    // CORS not supported.
+    xhr = null;
+  }
+  return xhr;
+}
+
+// Helper method to parse the title tag from the response.
+function getTitle(text) {
+  return text.match('<title>(.*)?</title>')[1];
+}
+
+// Make the actual CORS request.
+function makeCorsRequest(url) {
+  // This is a sample server that supports CORS.
+//  var url = 'http://html5rocks-cors.s3-website-us-east-1.amazonaws.com/index.html';
+
+  var xhr = createCORSRequest('GET', url);
+  if (!xhr) {
+//    alert('CORS not supported');
+    return;
+  }
+
+  // Response handlers.
+  xhr.onload = function() {
+    var text = xhr.responseText;
+    var ipobj =JSON.parse(text);
+   ip = ipobj.ip;
+ country=ipobj.country_name; 
+ 
+if (ip != "" && ip != null&&country!=""&&country!=null) {
+      setCookie("ipcookie", ip, 365);
+  setCookie("countrycookie",country,365); 
+ }
+
+//alert('Response from CORS request to ' + ip + ': ' +country );
+  };
+
+  xhr.onerror = function() {
+ //   alert('Woops, there was an error making the request.');
+  };
+
+  xhr.send();
+}
+
+
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  var expires = "expires="+d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for(var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+function checkCookie() {
+   ip = getCookie("ipcookie");
+
+
+	country= getCookie("countrycookie");  
+if (ip != ""&&country!="") {
+
+  //  alert("get ip and country： " + ip+","+country);
+  } else {
+    //ip = prompt("Please enter your name:", "");
+getIP();    
+
+//if (ip != "" && ip != null) {
+ //     setCookie("ipcookie", ip, 365);
+  //  }
+  }
+}
+
+
+
+
+
+
+
+	function getIP(){
+//		window.alert("get ip");
+var theUrl="https://api.ipapi.com/api/check?access_key=1c916d929672467db6decd4976f217c2&format=1";	
+
+		makeCorsRequest(theUrl);
+
+
+
+        } 
+        
+        function vote1() {
+
+alert("感謝你的投票!");	  
+ setInterval(getCandidate	,3000);
+            if(country=="Taiwan"){
+
+		voteid=uuidv4(); 
+            var theUrl="/mindiao/vote.php?vote=1&userGUID="+ip+"&voteid="+voteid;
+		
+          httpGetAsync(theUrl,callback); 
+             } 
+        }
+
+
+	function vote2() {
+alert("感謝你的投票!");          
+ setInterval(getCandidate     ,3000);
+            if(country=="Taiwan"){
+
+                voteid=uuidv4();
+            var theUrl="/mindiao/vote.php?vote=2&userGUID="+ip+"&voteid="+voteid;
+
+          httpGetAsync(theUrl,callback);
+             }
+        }
+
+
+function vote3() {
+alert("感謝你的投票!");       
+    setInterval(getCandidate     ,3000);
+            if(country=="Taiwan"){
+
+                voteid=uuidv4();
+
+            var theUrl="/mindiao/vote.php?vote=3&userGUID="+ip+"&voteid="+voteid;
+
+          httpGetAsync(theUrl,callback);
+             }
+        }
+
+
+function vote4() {
+alert("感謝你的投票!"); 
+          setInterval(getCandidate     ,3000);
+            if(country=="Taiwan"){
+
+                voteid=uuidv4();
+            var theUrl="/mindiao/vote.php?vote=4&userGUID="+ip+"&voteid="+voteid;
+
+          httpGetAsync(theUrl,callback);
+             }
+        }
+
+
+function vote5() {
+ alert("感謝你的投票!");
+          setInterval(getCandidate     ,3000);
+            if(country=="Taiwan"){
+
+                voteid=uuidv4();
+            var theUrl="/mindiao/vote.php?vote=5&userGUID="+ip+"&voteid="+voteid;
+
+          httpGetAsync(theUrl,callback);
+             }
+        }	
+
+
+
+
+
+	function getCandidate(){
+//alert("感謝你的投票!");
+
+//		window.alert("updateUI");
+
+		var theUrl="/mindiao/candidate.php";
+		httpGetAsync(theUrl,updateUI);
+	}
+	function updateUI(data){
+		jsonarray=JSON.parse(data);
+		
+		var percentageView1=document.getElementById("percentage1");
+
+		var percentage1=Math.round(jsonarray[0].vote*100);	
+		//alert(percentage1);	
+		var count1=jsonarray[0].count;
+		percentageView1.style="width: "+percentage1 +"%;font-size:40;";
+		percentageView1.innerText=percentage1+"%";
+
+
+
+
+
+
+
+
+
+
+		var percentageView2=document.getElementById("percentage2");
+
+                var percentage2=Math.round(jsonarray[1].vote*100);
+
+                //alert(percentage2);
+                var count2=jsonarray[1].count;
+                percentageView2.style="width: "+percentage2 +"%;font-size:40;";
+                percentageView2.innerText=percentage2+"%";
+
+
+
+		var percentageView3=document.getElementById("percentage3");
+
+                var percentage3=Math.round(jsonarray[2].vote*100);
+                //alert(percentage3);
+                var count3=jsonarray[2].count;
+                percentageView3.style="width: "+percentage3 +"%;font-size:40;";
+                percentageView3.innerText=percentage3+"%";
+
+
+
+		var percentageView4=document.getElementById("percentage4");
+
+                var percentage4=Math.round(jsonarray[3].vote*100);
+                //alert(percentage1);
+                var count4=jsonarray[3].count;
+                percentageView4.style="width: "+percentage4 +"%;font-size:40;";
+                percentageView4.innerText=percentage4+"%";
+
+
+
+		var percentageView5=document.getElementById("percentage5");
+
+                var percentage5=Math.round(jsonarray[4].vote*100);
+               // alert(percentage5);
+                var count5=jsonarray[4].count;
+                percentageView5.style="width: "+percentage5 +"%;font-size:40;";
+                percentageView5.innerText=percentage5+"%";
+
+
+
+		var totalView=document.getElementById("total");
+
+		var total=parseInt(count1)+parseInt(count2)+parseInt(count3)+parseInt(count4)+parseInt(count5);	
+	totalView.innerText="有效票數 "+total;
+	}
+
+        function callback(data){
+
+             // window.alert(data);
+        }
+
+function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+} 
+ 
+
+
+        function httpGetAsync(theUrl, callback)
+            {
+               var xmlHttp = new XMLHttpRequest();
+                xmlHttp.onreadystatechange = function() { 
+                   if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                   callback(xmlHttp.responseText);
+                }
+                xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+                xmlHttp.send(null);
+         }
+  </script>
 
 
 </head>
 
-<body>
+<body onload="checkCookie()">
 
 
     <!-- your content goes here -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light ">
         <div class="container">
-            <a class="navbar-brand " href="index.html">2020tw.tw</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand display-2" href="index.html" style="font-size:40">2020tw.tw</a>
+    <!--        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -38,7 +326,7 @@
                     </li>
 
                 </ul>
-            </div>
+            </div>       -->
         </div>
     </nav>
 
@@ -81,62 +369,82 @@
     <div class="container mt-5">
         <div class="h-75 row ">
             <div class="h-50 col-lg-4 col-md-60 col-sm-12 my-1  p-3 ">
-                <button class="h-50 shadow p-3 mb-5 btn btn-success rounded btn-lg btn-block" style="font-size:50;">
+                <button onclick="vote1()" id="vote1" class="h-50 shadow p-3 mb-5 btn btn-success rounded btn-lg btn-block" style="font-size:50;">
                     蔡英文
                 </button>
                 <div class="h-25 progress shadow">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: 25%;font-size:40;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >25%</div>
+                    <div id="percentage1" class="progress-bar bg-success" role="progressbar" style="width: 0%;font-size:40;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >0%</div>
                 </div>
 
             </div>
 
             <div class="h-50 col-lg-4 col-md-60 col-sm-12 my-1  p-3 ">
-                <button class="h-50 shadow p-3 mb-5 btn btn-primary rounded btn-lg btn-block" style="font-size:50;">韓國瑜</button>
+                <button onclick="vote2()" class="h-50 shadow p-3 mb-5 btn btn-primary rounded btn-lg btn-block" style="font-size:50;">韓國瑜</button>
                 <div class="h-25 progress shadow">
-                    <div class=" progress-bar " role="progressbar" style="width: 25%;font-size:40;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                    <div id="percentage2" class=" progress-bar " role="progressbar" style="width: 0%;font-size:40;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">0%</div>
                 </div>
 
             </div>
 
             <div class="h-50 col-lg-4 col-md-60 col-sm-12 my-1  p-3 ">
-                <button class="h-50 shadow p-3 mb-5 btn btn-light rounded btn-lg btn-block" style="font-size:50;">柯文哲</button>
+                <button onclick="vote3()"  class="h-50 shadow p-3 mb-5 btn btn-light rounded btn-lg btn-block" style="font-size:50;">柯文哲</button>
                 <div class="h-25 progress shadow">
-                    <div class=" progress-bar bg-light text-dark " role="progressbar" style="width: 25%;font-size:40;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                    <div id="percentage3"   class=" progress-bar bg-light text-dark " role="progressbar" style="width: 0%;font-size:40;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">0%</div>
                 </div>
             </div>
 
             <div class="h-50 col-lg-4 col-md-60 col-sm-12 my-1 p-3 ">
-                <button class="h-50 shadow p-3 mb-5 btn btn-light rounded btn-lg btn-block" style="font-size:50;">郭台銘</button>
+                <button onclick="vote5()" class="h-50 shadow p-3 mb-5 btn btn-light rounded btn-lg btn-block" style="font-size:50;">郭台銘</button>
                 <div class="h-25 progress shadow">
-                    <div class="progress-bar bg-light text-dark" role="progressbar" style="width: 25%;font-size:40;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                    <div id="percentage5" class="progress-bar bg-light text-dark" role="progressbar" style="width: 0%;font-size:40;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">0%</div>
                 </div>
 
             </div>
 
             <div class="h-50 col-lg-4 col-md-60 col-sm-12 my-1 p-3 ">
-                <button class="h-50 shadow p-3 mb-5 btn btn-light rounded btn-lg btn-block" style="font-size:50;">沒意見</button>
+                <button onclick="vote4()" class="h-50 shadow p-3 mb-5 btn btn-secondary rounded btn-lg btn-block" style="font-size:50;">沒意見</button>
                 <div class="h-25 progress shadow">
-                    <div class="progress-bar bg-light text-dark" role="progressbar" style="width: 25%;font-size:40;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+                    <div id="percentage4" class="progress-bar bg-secondary text-dark" role="progressbar" style="width: 0%;font-size:40;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">0%</div>
                 </div>
 
             </div>
 
-            <div class="h-50 col-lg-4 col-md-60 col-sm-12 my-1 p-3 shadow " style="font-size:50;">
+            <div id="total" class="h-50 col-lg-4 col-md-60 col-sm-12 my-1 p-3 shadow " style="font-size:50;">
                 有效票数
                 
             </div>
 
+		<div  class="h-100 col-lg-40 col-md-60 col-sm-12 my-1 p-3 shadow " style="font-size:30;">
+<div class="    mt-5 p-3">
+* 感謝訪問本站<br>
+* 請分享給所有人<br>
+* 本站自動計算過去七天內票數及支持率<br>
+* 投票後，網頁自動更新數字<br>
+* 請至少每週投票一次<br>
+* 重複投票不會造成統計錯誤<br>
+* 本站自動過濾國外的投票，防止灌票，造成誤傷，深表歉意<br>
+* 身處國外人士仍可查看支持率<br>
+<br>
+聯絡方式：wagehk@gmail.com
+
 
 
         </div>
+            </div>
+
+        </div>
+
+
 
     </div>
 
 
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>  
     <!-- your JavaScript file(s) go here -->
 
 
 </body>
+</html>
